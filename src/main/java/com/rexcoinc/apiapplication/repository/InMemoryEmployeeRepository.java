@@ -10,50 +10,52 @@ import java.util.List;
 public class InMemoryEmployeeRepository {
     private static final List<Employee> DATABASE = new ArrayList<>();
 
-    static{
+    static {
         DATABASE.addAll(
                 List.of(
                         new Employee(1L, "John", "Doe", "johndoe@gmail.com"),
                         new Employee(2L, "Jane", "Doe", "janedoe@gmail.com"),
-                        new Employee(2L, "Mike", "Ross", "mikeross@gmail.com")
+                        new Employee(3L, "Mike", "Ross", "mikeross@gmail.com")
                 )
         );
     }
 
-    public void addEmployee(Employee employee){
+    public Employee addEmployee(Employee employee) {
         DATABASE.add(employee);
+        return employee;
     }
 
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return List.copyOf(DATABASE);
     }
 
-    public Employee getEmployeeById(Long id){
+    public Employee getEmployeeById(Long id) {
         return DATABASE.stream()
                 .filter(employee -> employee.getId().equals(id))
                 .findFirst()
                 .orElseThrow();
     }
 
-    public void updateEmployee(Employee employee){
-        var employeeFromDB = getEmployeeById(employee.getId());
-        var updatedEmployee = mapToEmployee(employeeFromDB);
-        DATABASE.add(updatedEmployee);
+    public void updateEmployee(Employee employee) {
+        var updatedEmployee = mapToEmployee(employee);
+        var indexOfEmployeeFromDB = DATABASE.indexOf(updatedEmployee);
+        DATABASE.set(indexOfEmployeeFromDB, updatedEmployee);
     }
 
-    public Boolean deleteEmployee(Long id){
+    public Boolean deleteEmployee(Long id) {
         var employeeFromDB = getEmployeeById(id);
         return DATABASE.remove(employeeFromDB);
     }
 
 
-    private Employee mapToEmployee(Employee employeeDto){
-        var mappedEmployee = new Employee();
-        mappedEmployee.setFirstName(employeeDto.getFirstName());
-        mappedEmployee.setLastName(employeeDto.getLastName());
-        mappedEmployee.setUsername(employeeDto.getUsername());
-        mappedEmployee.setId(employeeDto.getId());
+    private Employee mapToEmployee(Employee employeeDto) {
+        var employeeFromDB = getEmployeeById(employeeDto.getId());
 
-        return mappedEmployee;
+        employeeFromDB.setLastName(employeeDto.getLastName());
+        employeeFromDB.setFirstName(employeeDto.getFirstName());
+        employeeFromDB.setUsername(employeeDto.getUsername());
+        employeeFromDB.setId(employeeDto.getId());
+
+        return employeeFromDB;
     }
 }
