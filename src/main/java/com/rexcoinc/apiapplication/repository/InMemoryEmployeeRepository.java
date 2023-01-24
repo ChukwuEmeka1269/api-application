@@ -24,7 +24,7 @@ public class InMemoryEmployeeRepository {
         DATABASE.add(employee);
     }
 
-    List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(){
         return List.copyOf(DATABASE);
     }
 
@@ -35,13 +35,13 @@ public class InMemoryEmployeeRepository {
                 .orElseThrow();
     }
 
-    void updateEmployee(Employee employee){
+    public void updateEmployee(Employee employee){
         var employeeFromDB = getEmployeeById(employee.getId());
         var updatedEmployee = mapToEmployee(employeeFromDB);
         DATABASE.add(updatedEmployee);
     }
 
-    Boolean deleteEmployee(Long id){
+    public Boolean deleteEmployee(Long id){
         var employeeFromDB = getEmployeeById(id);
         return DATABASE.remove(employeeFromDB);
     }
