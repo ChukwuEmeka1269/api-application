@@ -4,13 +4,15 @@ import com.rexcoinc.apiapplication.domain.Employee;
 import com.rexcoinc.apiapplication.repository.InMemoryEmployeeRepository;
 import com.rexcoinc.apiapplication.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Qualifier(value = "InMemoryService")
 @RequiredArgsConstructor
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class InMemoryEmployeeServiceImpl implements EmployeeService {
     private final InMemoryEmployeeRepository inMemoryEmployeeRepository;
     @Override
     public Employee addEmployee(Employee employee) {
